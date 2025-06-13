@@ -205,7 +205,7 @@
             justify-content: center;
             width: 100%;
             max-width: 800px;
-            margin: 0 auto;
+            margin: 80px auto 0; /* Добавлен отступ сверху */
             flex: 1;
         }
 
@@ -245,14 +245,14 @@
             }
 
             .carousel-slide.prev {
-                transform: translateX(-60%) scale(0.85);
+                transform: translateX(-60%) scale(0.9); /* Убрано масштабирование */
                 opacity: 0.7;
                 filter: blur(2px);
                 z-index: 2;
             }
 
             .carousel-slide.next {
-                transform: translateX(60%) scale(0.85);
+                transform: translateX(60%) scale(0.9); /* Убрано масштабирование */
                 opacity: 0.7;
                 filter: blur(2px);
                 z-index: 2;
@@ -945,7 +945,7 @@
             background: white;
             border-radius: 20px;
             width: 90%;
-            max-width: 800px;
+            max-width: 700px; /* Уменьшена максимальная ширина */
             padding: 30px;
             text-align: center;
             position: relative;
@@ -961,7 +961,7 @@
         .demo-video {
             width: 100%;
             max-width: 700px;
-            height: 400px;
+            height: 300px; /* Уменьшена высота */
             background: #f5f5f5;
             border-radius: 15px;
             overflow: hidden;
@@ -1085,7 +1085,7 @@
             }
 
             .demo-video {
-                height: 300px;
+                height: 250px; /* Адаптивная высота */
             }
         }
 
@@ -1116,15 +1116,15 @@
             }
 
                 .carousel-slide.prev {
-                    transform: translateX(-70%) scale(0.8);
+                    transform: translateX(-70%) scale(0.9);
                 }
 
                 .carousel-slide.next {
-                    transform: translateX(70%) scale(0.8);
+                    transform: translateX(70%) scale(0.9);
                 }
 
             .demo-video {
-                height: 200px;
+                height: 200px; /* Адаптивная высота */
             }
         }
     </style>
@@ -1262,10 +1262,10 @@
                     <h3>SpeakEasy</h3>
                     <p>Мы создаем цифровые продукты, которые помогают бизнесу расти и развиваться в современном мире.</p>
                     <div class="social-buttons">
-                        <div class="social-button"><i class="fab fa-facebook-f"></i></div>
-                        <div class="social-button"><i class="fab fa-twitter"></i></div>
-                        <div class="social-button"><i class="fab fa-instagram"></i></div>
-                        <div class="social-button"><i class="fab fa-linkedin-in"></i></div>
+                        <a href="https://facebook.com" target="_blank" class="social-button"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://twitter.com" target="_blank" class="social-button"><i class="fab fa-twitter"></i></a>
+                        <a href="https://instagram.com" target="_blank" class="social-button"><i class="fab fa-instagram"></i></a>
+                        <a href="https://linkedin.com" target="_blank" class="social-button"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
 
@@ -1475,7 +1475,6 @@
         let currentSlide = 0;
         const carouselContainer = document.getElementById('carouselContainer');
         const carouselControls = document.getElementById('carouselControls');
-        let carouselInterval;
 
         // Инициализация карусели
         function initCarousel() {
@@ -1506,14 +1505,12 @@
                 dot.className = 'carousel-dot';
                 if (index === 0) dot.classList.add('active');
                 dot.addEventListener('click', () => {
-                    resetCarouselTimer();
                     goToSlide(index);
                 });
                 carouselControls.appendChild(dot);
             });
 
             updateCarousel();
-            startCarousel();
         }
 
         // Обновление позиций слайдов
@@ -1554,17 +1551,6 @@
         function prevSlide() {
             currentSlide = (currentSlide - 1 + carouselImages.length) % carouselImages.length;
             updateCarousel();
-        }
-
-        // Автопрокрутка
-        function startCarousel() {
-            clearInterval(carouselInterval);
-            carouselInterval = setInterval(nextSlide, 7000);
-        }
-
-        // Сброс таймера карусели
-        function resetCarouselTimer() {
-            startCarousel();
         }
 
         // ===== МОДАЛЬНЫЕ ОКНА =====
