@@ -1,0 +1,96 @@
+.menu { 
+    margin: 0; 
+    padding: 0; 
+    list-style-type: none; 
+    display: flex; 
+    flex-wrap: wrap; 
+} 
+.menu__link{ 
+    display: block; 
+    padding: 10px; 
+    margin: 5px; 
+ 
+    background-color: rgb(255, 255, 255); 
+    color: rgb(0, 0, 0); 
+    text-decoration: none; 
+} 
+.menu__link--bordered {
+  border: 2px solid #000;
+  border-radius: 8px;
+}
+
+.header__login{ 
+  display: inline-block; 
+  padding: 10px; 
+  margin: 5px; 
+ 
+  background-color: rgb(95, 103, 110); 
+  color: rgb(255, 255, 255); 
+  text-decoration: none; 
+} 
+
+.header__auth {
+  display: flex;
+  gap: 10px;
+  margin-left: 20px;
+}
+
+@media (max-width: 768px) {
+  .header__auth {
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 10px;
+  }
+}
+
+.header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap; /* на случай если экран маленький */
+}
+
+.header__logo-wrap {
+  margin: 0;
+}
+
+.header__logo {
+  text-decoration: none;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #000; 
+}
+
+.header__nav {
+  flex: 1;
+}
+
+.menu {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu__link {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+.header__auth {
+  display: flex;
+  gap: 1rem;
+}
+
+.header__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 1rem 2rem;
+  gap: 1rem;
+}

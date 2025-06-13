@@ -1,0 +1,21 @@
+@font-face { 
+    font-family: "Arguedemo"; 
+    src: url("../fonts/MiConv.com__Arguedemo.woff2"); 
+    font-weight: normal; 
+    font-style: normal; 
+    font-display: swap; 
+} 
+@font-face { 
+    font-family: "Arguedemo"; 
+    src: url("../fonts/MiConv.com__Arguedemo.woff2"); 
+    font-weight: bold; 
+    font-style: normal; 
+    font-display: swap; 
+} 
+@font-face { 
+    font-family: "Arguedemo"; 
+    src: url("../fonts/MiConv.com__Arguedemo.woff2"); 
+    font-weight: normal; 
+    font-style: italic; 
+    font-display: swap; 
+}

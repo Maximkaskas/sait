@@ -1,0 +1,53 @@
+/* Контейнер-обертка */
+.container {
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+/* Заголовки */
+.logo {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 29px;
+    color: #fdb100;
+
+     
+}
+
+/* Кнопки */
+.button {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 28px;
+    color: #fdb100;
+    
+    border: 1px solid #fdb100;
+    border-radius: 16px;
+    background-color: transparent;
+    
+    cursor: pointer;
+}
+
+.button--accent {
+    color: #ffffff;
+    
+    background-color: #fdb100;
+}
+
+.button--link {
+    text-decoration: underline;
+    text-decoration-style: dashed;
+    text-underline-offset: 8px;
+
+    border: none;
+    background-color: transparent;
+}
+
+/* Формы */
+.form__field {
+    font-size: 16px;
+
+    background-color: transparent;
+    border: 1px solid rgba(145, 150, 161, 0.4);
+    border-radius: 16px;
+}

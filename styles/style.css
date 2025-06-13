@@ -1,0 +1,262 @@
+/* Подключение шрифтов */
+@import "fonts.css";
+/* Подключение основных стилей */
+@import "base.css";
+/* Подключение универсальных стилей */
+@import "typography.css";
+/* Подключение стилей относящихся к header */
+@import "header.css";
+/* Подключение стилей относящихся к footer */
+@import "footer.css";
+.button--outline {
+  background-color: transparent;
+  color: #000; /* или нужный цвет текста */
+  border: 2px solid #000; /* рамка */
+  padding: 0.5em 1em;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.button--outline:hover {
+  background-color: #f0f0f0;
+}
+/* --- Общие стили для кнопок --- */
+button,
+.button {
+  font-family: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  transition: background-color 0.3s, border-color 0.3s, transform 0.2s;
+}
+
+.button:hover {
+  opacity: 0.9;
+}
+
+.button:focus {
+  outline: 2px solid var(--color-focus, #ffcc00);
+  outline-offset: 2px;
+}
+
+.button:active {
+  transform: scale(0.97);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* --- Контрастный фон под промо-блок с изображениями --- */
+.promo {
+  background-color: #f8fafe; /* Преобладающий цвет под фоновыми изображениями */
+}
+
+.promo__image {
+  background-color: #f8fafe; /* Для случаев задержки загрузки */
+}
+
+.button--outline {
+  border: 2px solid #000;
+  border-radius: 8px;
+  background-color: transparent;
+  color: #000;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.button--outline:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+.services-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 40px;
+  margin-top: 60px;
+  flex-wrap: nowrap; /* Важно для горизонтального выравнивания */
+}
+
+.services-left {
+  flex: 0 0 auto;
+}
+
+.services-left img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.services-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 30px;
+  padding-left: 50px; /* Дополнительный отступ */
+  padding-right: 50px;
+}
+
+.service-item {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+}
+
+.service {
+  display: flex;
+  align-items: column;
+  border-top: 1px solid #ccc;
+  padding: 20px 0;
+}
+
+.service__left {
+  width: 60px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.service__right {
+  flex-grow: 1;
+}
+
+.service__title {
+  font-size: 20px;
+  margin: 5px;
+}
+
+.service__link {
+  font-size: 14px;
+  color: black;
+  text-decoration: none;
+}
+
+.service__icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: white;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.services-left {
+  max-width: 420px;
+  flex-shrink: 1; /* можно ужиматься */
+  flex-grow: 0;
+  flex-basis: 400px; /* начальная ширина */
+}
+
+
+.services-left img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+
+.services-left img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.services-right {
+  flex-grow: 1;
+  flex-shrink: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+
+
+.services-row {
+  display: flex;
+  gap: 100px;
+  align-items: flex-start;
+  flex-wrap: wrap; /* для мобильных */
+  margin-top: 60px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+@media (max-width: 768px) {
+  .services-row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .services-left,
+  .services-right {
+    width: 100%;
+  }
+
+  .services-left img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+
+
+
+
+
+.service-item {
+  display: flex;
+  gap: 20px; /* Уменьшаем промежуток между блоками */
+  width: 100%; /* Занимает всю доступную ширину */
+}
+
+/* Стили для каждого сервиса */
+.service {
+  flex: 1; /* Равномерное распределение ширины */
+  min-width: 280px; /* Минимальная ширина блока */
+  max-width: 380px; /* Максимальная ширина блока */
+  padding: 30px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+/* Увеличиваем размер номеров */
+.service__number {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* Улучшаем типографику заголовков */
+.service__title {
+  font-size: 1.4rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+/* Стили для ссылок */
+.service__link {
+  display: inline-block;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0066ff;
+  text-decoration: none;
+  margin-top: 20px;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+  .service-item {
+    flex-direction: column;
+  }
+  .service {
+    max-width: 100%;
+  }
+}
