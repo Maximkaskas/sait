@@ -626,12 +626,15 @@
             background: white;
             border-radius: 20px;
             width: 100%;
-            max-width: 500px;
+            max-width: 90%;
+            max-height: 90vh;
             box-shadow: var(--shadow);
             transform: scale(0.9);
             transition: var(--transition);
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         .modal.active .modal-content {
@@ -654,6 +657,7 @@
             color: var(--dark);
             transition: var(--transition);
             border: none;
+            z-index: 100;
         }
 
             .close-modal:hover {
@@ -944,11 +948,12 @@
         .demo-modal {
             background: white;
             border-radius: 20px;
-            width: 90%;
-            max-width: 700px;
+            width: 100%;
+            max-width: 800px;
             padding: 30px;
             text-align: center;
             position: relative;
+            box-sizing: border-box;
         }
 
         .demo-content {
@@ -981,10 +986,13 @@
         }
 
         .demo-text {
-            max-width: 600px;
-            margin: 20px auto;
+            max-width: 700px;
+            width: 100%;
+            margin: 20px 0;
             line-height: 1.6;
             text-align: center;
+            padding: 0 20px;
+            box-sizing: border-box;
         }
 
         .demo-text ul {
@@ -995,7 +1003,8 @@
         }
 
         .demo-text li {
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            text-align: left;
         }
 
         /* ===== АНИМАЦИИ ===== */
@@ -1102,6 +1111,10 @@
             .demo-video {
                 height: 300px;
             }
+
+            .demo-modal {
+                padding: 20px 15px;
+            }
         }
 
         @media (max-width: 576px) {
@@ -1139,7 +1152,15 @@
                 }
 
             .demo-video {
-                height: 250px;
+                height: 200px;
+            }
+
+            .demo-text {
+                padding: 0 10px;
+            }
+
+            .demo-text ul {
+                padding-left: 15px;
             }
         }
     </style>
