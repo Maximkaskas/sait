@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SpeakEasy — Digital Products</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         /* ===== ГЛОБАЛЬНЫЕ СТИЛИ ===== */
         * {
@@ -950,7 +951,7 @@
             border-radius: 20px;
             width: 100%;
             max-width: 800px;
-            padding: 30px;
+            padding: 40px;
             text-align: center;
             position: relative;
             box-sizing: border-box;
@@ -1005,6 +1006,17 @@
         .demo-text li {
             margin-bottom: 10px;
             text-align: left;
+        }
+
+        /* Премиум эффект */
+        .premium-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
         }
 
         /* ===== АНИМАЦИИ ===== */
@@ -1113,7 +1125,7 @@
             }
 
             .demo-modal {
-                padding: 20px 15px;
+                padding: 20px;
             }
         }
 
@@ -1180,7 +1192,7 @@
                         <li><a href="#services" class="menu__link">Услуги</a></li>
                         <li><a href="#team" class="menu__link">Команда</a></li>
                         <li><a href="#contact" class="menu__link">Контакты</a></li>
-                        <li><a href="#" class="menu__link menu__link--bordered">Премиум</a></li>
+                        <li><a href="#" class="menu__link menu__link--bordered" id="premiumBtn">Премиум</a></li>
                     </ul>
                 </nav>
 
@@ -1497,6 +1509,9 @@
         </div>
     </div>
 
+    <!-- Эффект фейерверков -->
+    <canvas id="premiumEffect" class="premium-effect"></canvas>
+
     <script>
         // ===== КАРУСЕЛЬ ИЗОБРАЖЕНИЙ =====
         const carouselImages = [
@@ -1629,6 +1644,8 @@
         const startNowBtn = document.getElementById('startNowBtn');
         const demoBtn = document.getElementById('demoBtn');
         const demoRegisterBtn = document.getElementById('demoRegisterBtn');
+        const premiumBtn = document.getElementById('premiumBtn');
+        const premiumEffect = document.getElementById('premiumEffect');
 
         // Открытие модального окна входа
         loginBtn.addEventListener('click', () => {
@@ -1851,6 +1868,104 @@
                     }
                 }, 2000);
             });
+        });
+
+        // ===== ФЕЙЕРВЕРКИ ДЛЯ ПРЕМИУМ =====
+        function createFireworks() {
+            const duration = 5 * 1000;
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 10000 };
+            
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+            
+            const interval = setInterval(function() {
+                const timeLeft = animationEnd - Date.now();
+                
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+                
+                const particleCount = 50 * (timeLeft / duration);
+                
+                // Основные фейерверки
+                confetti({
+                    ...defaults,
+                    particleCount,
+                    origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+                });
+                confetti({
+                    ...defaults,
+                    particleCount,
+                    origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+                });
+                
+                // Дополнительные эффекты
+                if (Math.random() > 0.7) {
+                    confetti({
+                        particleCount: 100,
+                        angle: 60,
+                        spread: 55,
+                        origin: { x: 0, y: 0.7 },
+                        colors: ['#ff0000', '#00ff00', '#0000ff']
+                    });
+                    confetti({
+                        particleCount: 100,
+                        angle: 120,
+                        spread: 55,
+                        origin: { x: 1, y: 0.7 },
+                        colors: ['#ff0000', '#00ff00', '#0000ff']
+                    });
+                }
+                
+                // Случайные вспышки
+                if (Math.random() > 0.8) {
+                    confetti({
+                        particleCount: 150,
+                        spread: 100,
+                        origin: { 
+                            x: Math.random(),
+                            y: Math.random() * 0.5
+                        },
+                        colors: ['#ff5e2f', '#c38cff', '#2b2d42', '#28a745']
+                    });
+                }
+                
+            }, 250);
+        }
+
+        // Кнопка Премиум
+        premiumBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            createFireworks();
+            
+            // Показать сообщение
+            const message = document.createElement('div');
+            message.innerHTML = '<h2>🎉 Премиум активирован! 🎉</h2><p>Теперь вы получили доступ ко всем эксклюзивным функциям!</p>';
+            message.style.position = 'fixed';
+            message.style.top = '50%';
+            message.style.left = '50%';
+            message.style.transform = 'translate(-50%, -50%)';
+            message.style.background = 'rgba(255, 255, 255, 0.95)';
+            message.style.padding = '30px';
+            message.style.borderRadius = '20px';
+            message.style.zIndex = '10001';
+            message.style.textAlign = 'center';
+            message.style.boxShadow = '0 10px 30px rgba(0,0,0,0.2)';
+            message.style.maxWidth = '90%';
+            message.style.width = '400px';
+            message.style.animation = 'fadeIn 0.5s ease';
+            
+            document.body.appendChild(message);
+            
+            setTimeout(() => {
+                message.style.transition = 'opacity 0.5s ease';
+                message.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(message);
+                }, 500);
+            }, 3000);
         });
 
         // ===== АНИМАЦИЯ ПРИ ПРОКРУТКЕ =====
