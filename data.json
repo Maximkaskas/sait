@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Категории меню</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f9f7fe 0%, #e3f2fd 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .menu-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            list-style: none;
+        }
+        
+        .menu-card {
+            display: block;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 35px 30px;
+            height: 100%;
+        }
+        
+        .menu-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+        
+        .card-icon {
+            margin-bottom: 25px;
+            display: inline-block;
+            padding: 18px;
+            border-radius: 14px;
+            background: #f0f7ff;
+        }
+        
+        .card-title {
+            font-size: 1.6rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .card-description {
+            font-size: 1.05rem;
+            color: #7f8c8d;
+            line-height: 1.7;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            .menu-list {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Вкусные категории</h1>
+            <p class="subtitle">Выберите подходящий раздел с рецептами для любого случая и уровня кулинарного мастерства</p>
+        </header>
+        
+        <ul class="menu-list" id="menu-container">
+            <!-- Меню будет сгенерировано скриптом -->
+        </ul>
+        
+        <footer>
+            <p>Приятного аппетита и успешных кулинарных экспериментов!</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuData = [
+                {
+                    "link": "/simple-dish-menu/",
+                    "icon": "images/icon/menu.svg",
+                    "iconAlt": "Иконка для простых блюд",
+                    "iconWidth": 22,
+                    "iconHeight": 24,
+                    "title": "Простые блюда",
+                    "description": "Время приготовления таких блюд не более 1 час"
+                },
+                {
+                    "link": "/children-menu/",
+                    "icon": "images/icon/cook.svg",
+                    "iconAlt": "Иконка для детского меню",
+                    "iconWidth": 24,
+                    "iconHeight": 24,
+                    "title": "Детское",
+                    "description": "Самые полезные блюда которые можно детям любого возраста"
+                },
+                {
+                    "link": "/chief-menu/",
+                    "icon": "images/icon/chef.svg",
+                    "iconAlt": "Иконка для блюд от шеф-поваров",
+                    "iconWidth": 24,
+                    "iconHeight": 23,
+                    "title": "От шеф-поваров",
+                    "description": "Требуют умения, времени и терпения, зато как в ресторане"
+                },
+                {
+                    "link": "/holiday-menu/",
+                    "icon": "images/icon/fire.svg",
+                    "iconAlt": "Иконка для блюд на праздник",
+                    "iconWidth": 24,
+                    "iconHeight": 23,
+                    "title": "На праздник",
+                    "description": "Чем удивить гостей, чтобы все были сыты за праздничным столом"
+                }
+            ];
+
+            const menuContainer = document.getElementById('menu-container');
+            
+            menuData.forEach(item => {
+                const menuItem = document.createElement('li');
+                
+                menuItem.innerHTML = `
+                    <a href="${item.link}" class="menu-card">
+                        <div class="card-icon">
+                            <img src="${item.icon}" 
+                                 alt="${item.iconAlt}" 
+                                 width="${item.iconWidth}" 
+                                 height="${item.iconHeight}">
+                        </div>
+                        <h3 class="card-title">${item.title}</h3>
+                        <p class="card-description">${item.description}</p>
+                    </a>
+                `;
+                
+                menuContainer.appendChild(menuItem);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -5,8 +5,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SpeakEasy — Digital Products</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
+        /* ===== ПРЕЛОАДЕР ===== */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            background: #fefefb;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 8px solid #fbf9f4;
+            border-top: 8px solid #fdb100;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .preloader-text {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: 500;
+            color: #2B2D42;
+        }
+
+        .content {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+            .content.loaded {
+                opacity: 1;
+                visibility: visible;
+            }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
         /* ===== ГЛОБАЛЬНЫЕ СТИЛИ ===== */
         * {
             margin: 0;
@@ -22,6 +76,7 @@
             --light: #F8F9FA;
             --gray: #6C757D;
             --success: #28A745;
+            --error: #DC3545;
             --shadow: 0 10px 30px rgba(0,0,0,0.1);
             --transition: all 0.3s ease;
         }
@@ -346,13 +401,14 @@
             font-size: 18px;
         }
 
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+        /* Стили для Swiper */
+        .swiper {
+            width: 100%;
+            height: 100%;
+            padding: 20px 0 40px;
         }
 
-        .service-card {
+        .swiper-slide {
             background: white;
             border-radius: 16px;
             padding: 35px 30px;
@@ -362,6 +418,44 @@
             position: relative;
             overflow: hidden;
             border: 1px solid rgba(0,0,0,0.05);
+            height: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .swiper-pagination-bullet {
+            width: 12px;
+            height: 12px;
+            background: rgba(43, 45, 66, 0.3);
+            opacity: 1;
+        }
+
+        .swiper-pagination-bullet-active {
+            background: var(--primary);
+        }
+
+        .swiper-button-prev, .swiper-button-next {
+            color: var(--primary);
+            background: rgba(255, 255, 255, 0.8);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+            .swiper-button-prev::after, .swiper-button-next::after {
+                font-size: 18px;
+                font-weight: bold;
+            }
+
+        @media (max-width: 768px) {
+            .swiper-button-prev, .swiper-button-next {
+                display: none;
+            }
+        }
+
+        .service-card {
+            transition: var(--transition);
         }
 
             .service-card::before {
@@ -427,6 +521,7 @@
             text-decoration: none;
             font-weight: 600;
             transition: var(--transition);
+            margin-top: auto;
         }
 
             .service-link:hover {
@@ -955,6 +1050,9 @@
             text-align: center;
             position: relative;
             box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .demo-content {
@@ -979,12 +1077,12 @@
             position: relative;
         }
 
-        .demo-video iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            border-radius: 15px;
-        }
+            .demo-video iframe {
+                width: 100%;
+                height: 100%;
+                border: none;
+                border-radius: 15px;
+            }
 
         .demo-text {
             max-width: 700px;
@@ -996,17 +1094,17 @@
             box-sizing: border-box;
         }
 
-        .demo-text ul {
-            display: inline-block;
-            text-align: left;
-            margin: 15px auto;
-            padding-left: 20px;
-        }
+            .demo-text ul {
+                display: inline-block;
+                text-align: left;
+                margin: 15px auto;
+                padding-left: 20px;
+            }
 
-        .demo-text li {
-            margin-bottom: 10px;
-            text-align: left;
-        }
+            .demo-text li {
+                margin-bottom: 10px;
+                text-align: left;
+            }
 
         /* Премиум эффект */
         .premium-effect {
@@ -1018,6 +1116,63 @@
             pointer-events: none;
             z-index: 9999;
         }
+
+        /* Стили для премиум-уведомления */
+        .premium-notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            z-index: 10001;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 90%;
+            width: 400px;
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+
+            .premium-notification.active {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+        /* ===== УВЕДОМЛЕНИЯ ===== */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            z-index: 10000;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+            .notification.show {
+                transform: translateX(0);
+            }
+
+            .notification.success {
+                background: linear-gradient(135deg, var(--success), #1e7e34);
+            }
+
+            .notification.error {
+                background: linear-gradient(135deg, var(--error), #bd2130);
+            }
+
+            .notification.info {
+                background: linear-gradient(135deg, #17a2b8, #138496);
+            }
 
         /* ===== АНИМАЦИИ ===== */
         @keyframes slideUp {
@@ -1171,348 +1326,485 @@
                 padding: 0 10px;
             }
 
-            .demo-text ul {
-                padding-left: 15px;
-            }
+                .demo-text ul {
+                    padding-left: 15px;
+                }
         }
     </style>
 </head>
 <body>
-    <!-- Шапка -->
-    <header id="header">
-        <div class="container">
-            <div class="header__inner">
-                <h1 class="header__logo-wrap">
-                    <a href="/" class="logo"><i class="fas fa-comments"></i>SpeakEasy</a>
-                </h1>
-
-                <nav class="header__nav">
-                    <ul class="menu">
-                        <li><a href="#home" class="menu__link">Главная</a></li>
-                        <li><a href="#services" class="menu__link">Услуги</a></li>
-                        <li><a href="#team" class="menu__link">Команда</a></li>
-                        <li><a href="#contact" class="menu__link">Контакты</a></li>
-                        <li><a href="#" class="menu__link menu__link--bordered" id="premiumBtn">Премиум</a></li>
-                    </ul>
-                </nav>
-
-                <div class="header__auth">
-                    <button class="button button--outline" id="loginBtn">
-                        <i class="fas fa-sign-in-alt"></i>Вход
-                    </button>
-                    <button class="button button--accent" id="registerBtn">
-                        <i class="fas fa-user-plus"></i>Регистрация
-                    </button>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Главный баннер -->
-    <section class="hero" id="home">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-slogan">
-                    Инновации в цифровых продуктах
-                </div>
-                <h1>Мы создаем потрясающие цифровые продукты для вашего бизнеса</h1>
-                <p>SpeakEasy помогает компаниям преобразовать свои идеи в инновационные цифровые решения. Наша команда экспертов создает продукты, которые выделяются на рынке.</p>
-                <div class="hero-buttons">
-                    <button class="button button--accent" id="startNowBtn">Начать сейчас</button>
-                    <button class="button button--outline" id="demoBtn">Посмотреть демо</button>
-                </div>
-            </div>
-
-            <div class="hero-carousel">
-                <div class="carousel-container" id="carouselContainer"></div>
-                <div class="carousel-controls" id="carouselControls"></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Услуги -->
-    <section class="services-section" id="services">
-        <div class="container">
-            <h2 class="section-title animate-on-scroll">Наши ключевые услуги</h2>
-            <p class="section-subtitle animate-on-scroll">Мы предоставляем комплексные решения для цифровой трансформации вашего бизнеса</p>
-
-            <div class="services-grid">
-                <div class="service-card animate-on-scroll delay-1">
-                    <div class="service-icon"><i class="fas fa-paint-brush"></i></div>
-                    <h3 class="service-title">Web UI/UX Design</h3>
-                    <p class="service-text">Создаем интуитивно понятные интерфейсы, которые улучшают взаимодействие с пользователем и повышают конверсию.</p>
-                    <a href="#" class="service-link">Узнать больше <i class="fas fa-arrow-right"></i></a>
-                </div>
-
-                <div class="service-card animate-on-scroll delay-2">
-                    <div class="service-icon"><i class="fas fa-chart-pie"></i></div>
-                    <h3 class="service-title">Dashboard and Saas Design</h3>
-                    <p class="service-text">Проектируем информативные дашборды и SaaS решения для эффективного управления бизнес-процессами.</p>
-                    <a href="#" class="service-link">Узнать больше <i class="fas fa-arrow-right"></i></a>
-                </div>
-
-                <div class="service-card animate-on-scroll delay-3">
-                    <div class="service-icon"><i class="fas fa-mobile-alt"></i></div>
-                    <h3 class="service-title">Mobile App UI/UX Design</h3>
-                    <p class="service-text">Разрабатываем мобильные приложения с фокусом на пользовательском опыте и современных трендах дизайна.</p>
-                    <a href="#" class="service-link">Узнать больше <i class="fas fa-arrow-right"></i></a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Команда -->
-    <section class="team-section" id="team">
-        <div class="container">
-            <h2 class="section-title animate-on-scroll">Наша команда</h2>
-            <p class="section-subtitle animate-on-scroll">Профессионалы, которые создают цифровые решения для вашего бизнеса</p>
-
-            <div class="team-grid">
-                <div class="team-member animate-on-scroll delay-1">
-                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Степанов Максим" class="member-photo">
-                    <h3 class="member-name">Степанов Максим</h3>
-                    <p class="member-role">Frontend Developer</p>
-                </div>
-
-                <div class="team-member animate-on-scroll delay-2">
-                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Зыкова Виктория" class="member-photo">
-                    <h3 class="member-name">Зыкова Виктория</h3>
-                    <p class="member-role">UI/UX Designer</p>
-                </div>
-
-                <div class="team-member animate-on-scroll delay-3">
-                    <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Бушмелева Дарья" class="member-photo">
-                    <h3 class="member-name">Бушмелева Дарья</h3>
-                    <p class="member-role">Project Manager</p>
-                </div>
-
-                <div class="team-member animate-on-scroll delay-4">
-                    <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Мартьянова Дилия" class="member-photo">
-                    <h3 class="member-name">Мартьянова Дилия</h3>
-                    <p class="member-role">Backend Developer</p>
-                </div>
-
-                <div class="team-member animate-on-scroll delay-4">
-                    <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Павлюкова Мария" class="member-photo">
-                    <h3 class="member-name">Павлюкова Мария</h3>
-                    <p class="member-role">QA Engineer</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Футер -->
-    <footer class="footer-section" id="contact">
-        <div class="footer-divider"></div>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>SpeakEasy</h3>
-                    <p>Мы создаем цифровые продукты, которые помогают бизнесу расти и развиваться в современном мире.</p>
-                    <div class="social-buttons">
-                        <a href="https://facebook.com" target="_blank" class="social-button"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://twitter.com" target="_blank" class="social-button"><i class="fab fa-twitter"></i></a>
-                        <a href="https://instagram.com" target="_blank" class="social-button"><i class="fab fa-instagram"></i></a>
-                        <a href="https://linkedin.com" target="_blank" class="social-button"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-
-                <div class="footer-column">
-                    <h3>Наши услуги</h3>
-                    <ul class="footer-links">
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Веб-разработка</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Мобильные приложения</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> UI/UX Дизайн</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Бизнес-аналитика</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Цифровой маркетинг</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-column">
-                    <h3>Контакты</h3>
-                    <ul class="footer-links">
-                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> Москва, ул. Тверская, 18</a></li>
-                        <li><a href="tel:+74951234567"><i class="fas fa-phone"></i> +7 (495) 123-45-67</a></li>
-                        <li><a href="mailto:info@speakeasy.ru"><i class="fas fa-envelope"></i> info@speakeasy.ru</a></li>
-                        <li><a href="#"><i class="fas fa-clock"></i> Пн-Пт: 9:00 - 18:00</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-column">
-                    <h3>Подписка</h3>
-                    <p>Подпишитесь на нашу рассылку, чтобы получать новости и специальные предложения</p>
-                    <div class="form-group">
-                        <input type="email" class="form-control" placeholder="Ваш email">
-                    </div>
-                    <button class="button button--accent">Подписаться</button>
-                </div>
-            </div>
-
-            <div class="copyright">
-                © 2025 SpeakEasy. Все права защищены.
-            </div>
-        </div>
-    </footer>
-
-    <!-- Модальное окно входа/регистрации -->
-    <div class="modal" id="loginModal">
-        <div class="modal-content">
-            <button class="close-modal" id="closeLogin"><i class="fas fa-times"></i></button>
-
-            <div class="tabs">
-                <div class="tab active" data-tab="login">Вход</div>
-                <div class="tab" data-tab="register">Регистрация</div>
-            </div>
-
-            <div class="form-container">
-                <!-- Форма входа -->
-                <form class="auth-form active" id="loginForm">
-                    <div class="form-group">
-                        <label for="loginEmail">Email</label>
-                        <i class="fas fa-envelope input-icon"></i>
-                        <input type="email" id="loginEmail" class="form-control" placeholder="Введите ваш email" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="loginPassword">Пароль</label>
-                        <i class="fas fa-lock input-icon"></i>
-                        <input type="password" id="loginPassword" class="form-control" placeholder="Введите пароль" required>
-                        <a href="#" class="forgot-password">Забыли пароль?</a>
-                    </div>
-
-                    <div class="form-group">
-                        <button type="submit" class="button button--accent" style="width:100%">
-                            <i class="fas fa-sign-in-alt"></i> Войти
-                        </button>
-                    </div>
-
-                    <div class="social-login">
-                        <span>Или войдите через</span>
-                    </div>
-
-                    <div class="social-buttons">
-                        <div class="social-button google social-auth-btn" data-service="google"><i class="fab fa-google"></i></div>
-                        <div class="social-button facebook social-auth-btn" data-service="facebook"><i class="fab fa-facebook-f"></i></div>
-                        <div class="social-button twitter social-auth-btn" data-service="twitter"><i class="fab fa-twitter"></i></div>
-                    </div>
-
-                    <div class="switch-form">
-                        Еще нет аккаунта? <a href="#" id="switchToRegister">Зарегистрируйтесь</a>
-                    </div>
-                </form>
-
-                <!-- Форма регистрации -->
-                <form class="auth-form" id="registerForm">
-                    <div class="form-group">
-                        <label for="regName">Имя</label>
-                        <i class="fas fa-user input-icon"></i>
-                        <input type="text" id="regName" class="form-control" placeholder="Введите ваше имя" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="regEmail">Email</label>
-                        <i class="fas fa-envelope input-icon"></i>
-                        <input type="email" id="regEmail" class="form-control" placeholder="Введите ваш email" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="regPassword">Пароль</label>
-                        <i class="fas fa-lock input-icon"></i>
-                        <input type="password" id="regPassword" class="form-control" placeholder="Создайте пароль" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="regConfirm">Подтвердите пароль</label>
-                        <i class="fas fa-lock input-icon"></i>
-                        <input type="password" id="regConfirm" class="form-control" placeholder="Повторите пароль" required>
-                    </div>
-
-                    <div class="form-group">
-                        <button type="submit" class="button button--accent" style="width:100%">
-                            <i class="fas fa-user-plus"></i> Зарегистрироваться
-                        </button>
-                    </div>
-
-                    <div class="social-login">
-                        <span>Или зарегистрируйтесь через</span>
-                    </div>
-
-                    <div class="social-buttons">
-                        <div class="social-button google social-auth-btn" data-service="google"><i class="fab fa-google"></i></div>
-                        <div class="social-button facebook social-auth-btn" data-service="facebook"><i class="fab fa-facebook-f"></i></div>
-                        <div class="social-button twitter social-auth-btn" data-service="twitter"><i class="fab fa-twitter"></i></div>
-                    </div>
-
-                    <div class="switch-form">
-                        Уже есть аккаунт? <a href="#" id="switchToLogin">Войдите</a>
-                    </div>
-                </form>
-            </div>
-        </div>
+    <!-- Прелоадер -->
+    <div class="preloader" id="preloader">
+        <div class="loader"></div>
+        <div class="preloader-text">Загружаем цифровые решения...</div>
     </div>
 
-    <!-- Модальное окно авторизации через соцсети -->
-    <div class="social-auth-modal" id="socialAuthModal">
-        <div class="social-auth-content">
-            <button class="close-modal" id="closeSocialAuth"><i class="fas fa-times"></i></button>
-            <div class="social-auth-header">
-                <div class="social-auth-icon" id="socialAuthIcon"><i class="fab fa-google"></i></div>
-                <h2 id="socialAuthTitle">Вход через Google</h2>
-            </div>
+    <!-- Основной контент -->
+    <div class="content" id="content">
+        <!-- Шапка -->
+        <header id="header">
+            <div class="container">
+                <div class="header__inner">
+                    <h1 class="header__logo-wrap">
+                        <a href="/" class="logo"><i class="fas fa-comments"></i>SpeakEasy</a>
+                    </h1>
 
-            <div id="socialAuthLoader" class="social-auth-loader"></div>
-
-            <div id="socialAuthSuccess" class="social-auth-success" style="display: none;">
-                <i class="fas fa-check-circle"></i> Успешная авторизация!
-            </div>
-
-            <div id="socialAuthForm" style="display: none;">
-                <p>Завершите регистрацию, заполнив информацию</p>
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Ваше имя" id="socialName">
-                </div>
-                <div class="form-group">
-                    <input type="email" class="form-control" placeholder="Ваш email" id="socialEmail">
-                </div>
-                <button class="button button--accent social-auth-button" id="completeSocialAuth">
-                    Завершить регистрацию
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Модальное окно демо -->
-    <div class="modal" id="demoModal">
-        <div class="modal-content">
-            <button class="close-modal" id="closeDemo"><i class="fas fa-times"></i></button>
-            <div class="demo-modal">
-                <h2>Демонстрация нашей платформы</h2>
-                <div class="demo-content">
-                    <div class="demo-video">
-                        <iframe src="https://www.youtube.com/embed/9No-FiEInLA" title="Демонстрация платформы" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
-                    <div class="demo-text">
-                        <p>Посмотрите как наша платформа помогает бизнесу:</p>
-                        <ul>
-                            <li>Интуитивный интерфейс для управления проектами</li>
-                            <li>Интеграция с популярными сервисами аналитики</li>
-                            <li>Автоматизация рутинных задач</li>
-                            <li>Мощные инструменты для коллаборации</li>
+                    <nav class="header__nav">
+                        <ul class="menu">
+                            <li><a href="#home" class="menu__link">Главная</a></li>
+                            <li><a href="#services" class="menu__link">Услуги</a></li>
+                            <li><a href="#team" class="menu__link">Команда</a></li>
+                            <li><a href="#contact" class="menu__link">Контакты</a></li>
+                            <li><a href="#" class="menu__link menu__link--bordered" id="premiumBtn">Премиум</a></li>
                         </ul>
-                        <p>Полная версия доступна после регистрации. Начните 14-дневный бесплатный пробный период прямо сейчас!</p>
+                    </nav>
+
+                    <div class="header__auth">
+                        <button class="button button--outline" id="loginBtn">
+                            <i class="fas fa-sign-in-alt"></i>Вход
+                        </button>
+                        <button class="button button--accent" id="registerBtn">
+                            <i class="fas fa-user-plus"></i>Регистрация
+                        </button>
                     </div>
-                    <button class="button button--accent" id="demoRegisterBtn">
-                        <i class="fas fa-user-plus"></i> Начать пробный период
+                </div>
+            </div>
+        </header>
+
+        <!-- Главный баннер -->
+        <section class="hero" id="home">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-slogan">
+                        Инновации в цифровых продуктах
+                    </div>
+                    <h1>Мы создаем потрясающие цифровые продукты для вашего бизнеса</h1>
+                    <p>SpeakEasy помогает компаниям преобразовать свои идеи в инновационные цифровые решения. Наша команда экспертов создает продукты, которые выделяются на рынке.</p>
+                    <div class="hero-buttons">
+                        <button class="button button--accent" id="startNowBtn">Начать сейчас</button>
+                        <button class="button button--outline" id="demoBtn">Посмотреть демо</button>
+                    </div>
+                </div>
+
+                <div class="hero-carousel">
+                    <div class="carousel-container" id="carouselContainer"></div>
+                    <div class="carousel-controls" id="carouselControls"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Услуги -->
+        <section class="services-section" id="services">
+            <div class="container">
+                <h2 class="section-title animate-on-scroll">Наши ключевые услуги</h2>
+                <p class="section-subtitle animate-on-scroll">Мы предоставляем комплексные решения для цифровой трансформации вашего бизнеса</p>
+
+                <!-- Swiper контейнер -->
+                <div class="swiper mySwiper">
+                    <div class="swiper-wrapper" id="servicesContainer"></div>
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Команда -->
+        <section class="team-section" id="team">
+            <div class="container">
+                <h2 class="section-title animate-on-scroll">Наша команда</h2>
+                <p class="section-subtitle animate-on-scroll">Профессионалы, которые создают цифровые решения для вашего бизнеса</p>
+
+                <div class="team-grid">
+                    <div class="team-member animate-on-scroll delay-1">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Степанов Максим" class="member-photo">
+                        <h3 class="member-name">Степанов Максим</h3>
+                        <p class="member-role">Frontend Developer</p>
+                    </div>
+
+                    <div class="team-member animate-on-scroll delay-2">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Зыкова Виктория" class="member-photo">
+                        <h3 class="member-name">Зыкова Виктория</h3>
+                        <p class="member-role">UI/UX Designer</p>
+                    </div>
+
+                    <div class="team-member animate-on-scroll delay-3">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Бушмелева Дарья" class="member-photo">
+                        <h3 class="member-name">Бушмелева Дарья</h3>
+                        <p class="member-role">Project Manager</p>
+                    </div>
+
+                    <div class="team-member animate-on-scroll delay-4">
+                        <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Мартьянова Дилия" class="member-photo">
+                        <h3 class="member-name">Мартьянова Дилия</h3>
+                        <p class="member-role">Backend Developer</p>
+                    </div>
+
+                    <div class="team-member animate-on-scroll delay-4">
+                        <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Павлюкова Мария" class="member-photo">
+                        <h3 class="member-name">Павлюкова Мария</h3>
+                        <p class="member-role">QA Engineer</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Футер -->
+        <footer class="footer-section" id="contact">
+            <div class="footer-divider"></div>
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-column">
+                        <h3>SpeakEasy</h3>
+                        <p>Мы создаем цифровые продукты, которые помогают бизнесу расти и развиваться в современном мире.</p>
+                        <div class="social-buttons">
+                            <a href="https://facebook.com" target="_blank" class="social-button"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://twitter.com" target="_blank" class="social-button"><i class="fab fa-twitter"></i></a>
+                            <a href="https://instagram.com" target="_blank" class="social-button"><i class="fab fa-instagram"></i></a>
+                            <a href="https://linkedin.com" target="_blank" class="social-button"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="footer-column">
+                        <h3>Наши услуги</h3>
+                        <ul class="footer-links">
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Веб-разработка</a></li>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Мобильные приложения</a></li>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> UI/UX Дизайн</a></li>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Бизнес-аналитика</a></li>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Цифровой маркетинг</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-column">
+                        <h3>Контакты</h3>
+                        <ul class="footer-links">
+                            <li><a href="#"><i class="fas fa-map-marker-alt"></i> Москва, ул. Тверская, 18</a></li>
+                            <li><a href="tel:+74951234567"><i class="fas fa-phone"></i> +7 (495) 123-45-67</a></li>
+                            <li><a href="mailto:info@speakeasy.ru"><i class="fas fa-envelope"></i> info@speakeasy.ru</a></li>
+                            <li><a href="#"><i class="fas fa-clock"></i> Пн-Пт: 9:00 - 18:00</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-column">
+                        <h3>Подписка</h3>
+                        <p>Подпишитесь на нашу рассылку, чтобы получать новости и специальные предложения</p>
+                        <div class="form-group">
+                            <input type="email" class="form-control" placeholder="Ваш email">
+                        </div>
+                        <button class="button button--accent">Подписаться</button>
+                    </div>
+                </div>
+
+                <div class="copyright">
+                    © 2025 SpeakEasy. Все права защищены.
+                </div>
+            </div>
+        </footer>
+
+        <!-- Модальное окно входа/регистрации -->
+        <div class="modal" id="loginModal">
+            <div class="modal-content">
+                <button class="close-modal" id="closeLogin"><i class="fas fa-times"></i></button>
+
+                <div class="tabs">
+                    <div class="tab active" data-tab="login">Вход</div>
+                    <div class="tab" data-tab="register">Регистрация</div>
+                </div>
+
+                <div class="form-container">
+                    <!-- Форма входа -->
+                    <form class="auth-form active" id="loginForm">
+                        <div class="form-group">
+                            <label for="loginEmail">Email</label>
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input type="email" id="loginEmail" class="form-control" placeholder="Введите ваш email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="loginPassword">Пароль</label>
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="loginPassword" class="form-control" placeholder="Введите пароль" required>
+                            <a href="#" class="forgot-password">Забыли пароль?</a>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="button button--accent" style="width:100%">
+                                <i class="fas fa-sign-in-alt"></i> Войти
+                            </button>
+                        </div>
+
+                        <div class="social-login">
+                            <span>Или войдите через</span>
+                        </div>
+
+                        <div class="social-buttons">
+                            <div class="social-button google social-auth-btn" data-service="google"><i class="fab fa-google"></i></div>
+                            <div class="social-button facebook social-auth-btn" data-service="facebook"><i class="fab fa-facebook-f"></i></div>
+                            <div class="social-button twitter social-auth-btn" data-service="twitter"><i class="fab fa-twitter"></i></div>
+                        </div>
+
+                        <div class="switch-form">
+                            Еще нет аккаунта? <a href="#" id="switchToRegister">Зарегистрируйтесь</a>
+                        </div>
+                    </form>
+
+                    <!-- Форма регистрации -->
+                    <form class="auth-form" id="registerForm">
+                        <div class="form-group">
+                            <label for="regName">Имя</label>
+                            <i class="fas fa-user input-icon"></i>
+                            <input type="text" id="regName" class="form-control" placeholder="Введите ваше имя" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="regEmail">Email</label>
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input type="email" id="regEmail" class="form-control" placeholder="Введите ваш email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="regPassword">Пароль</label>
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="regPassword" class="form-control" placeholder="Создайте пароль" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="regConfirm">Подтвердите пароль</label>
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="regConfirm" class="form-control" placeholder="Повторите пароль" required>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="button button--accent" style="width:100%">
+                                <i class="fas fa-user-plus"></i> Зарегистрироваться
+                            </button>
+                        </div>
+
+                        <div class="social-login">
+                            <span>Или зарегистрируйтесь через</span>
+                        </div>
+
+                        <div class="social-buttons">
+                            <div class="social-button google social-auth-btn" data-service="google"><i class="fab fa-google"></i></div>
+                            <div class="social-button facebook social-auth-btn" data-service="facebook"><i class="fab fa-facebook-f"></i></div>
+                            <div class="social-button twitter social-auth-btn" data-service="twitter"><i class="fab fa-twitter"></i></div>
+                        </div>
+
+                        <div class="switch-form">
+                            Уже есть аккаунт? <a href="#" id="switchToLogin">Войдите</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Модальное окно авторизации через соцсети -->
+        <div class="social-auth-modal" id="socialAuthModal">
+            <div class="social-auth-content">
+                <button class="close-modal" id="closeSocialAuth"><i class="fas fa-times"></i></button>
+                <div class="social-auth-header">
+                    <div class="social-auth-icon" id="socialAuthIcon"><i class="fab fa-google"></i></div>
+                    <h2 id="socialAuthTitle">Вход через Google</h2>
+                </div>
+
+                <div id="socialAuthLoader" class="social-auth-loader"></div>
+
+                <div id="socialAuthSuccess" class="social-auth-success" style="display: none;">
+                    <i class="fas fa-check-circle"></i> Успешная авторизация!
+                </div>
+
+                <div id="socialAuthForm" style="display: none;">
+                    <p>Завершите регистрацию, заполнив информацию</p>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Ваше имя" id="socialName">
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" placeholder="Ваш email" id="socialEmail">
+                    </div>
+                    <button class="button button--accent social-auth-button" id="completeSocialAuth">
+                        Завершить регистрацию
                     </button>
                 </div>
             </div>
         </div>
+
+        <!-- Модальное окно демо -->
+        <div class="modal" id="demoModal">
+            <div class="modal-content">
+                <button class="close-modal" id="closeDemo"><i class="fas fa-times"></i></button>
+                <div class="demo-modal">
+                    <h2>Демонстрация нашей платформы</h2>
+                    <div class="demo-content">
+                        <div class="demo-video">
+                            <iframe src="https://www.youtube.com/embed/9No-FiEInLA" title="Демонстрация платформы" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <div class="demo-text">
+                            <p>Посмотрите как наша платформа помогает бизнесу:</p>
+                            <ul>
+                                <li>Интуитивный интерфейс для управления проектами</li>
+                                <li>Интеграция с популярными сервисами аналитики</li>
+                                <li>Автоматизация рутинных задач</li>
+                                <li>Мощные инструменты для коллаборации</li>
+                            </ul>
+                            <p>Полная версия доступна после регистрации. Начните 14-дневный бесплатный пробный период прямо сейчас!</p>
+                        </div>
+                        <button class="button button--accent" id="demoRegisterBtn">
+                            <i class="fas fa-user-plus"></i> Начать пробный период
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Эффект фейерверков -->
+        <canvas id="premiumEffect" class="premium-effect"></canvas>
     </div>
 
-    <!-- Эффект фейерверков -->
-    <canvas id="premiumEffect" class="premium-effect"></canvas>
-
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
+        // ===== ПРЕЛОАДЕР =====
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            const content = document.getElementById('content');
+
+            // Задержка для демонстрации прелоадера
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                preloader.style.visibility = 'hidden';
+
+                content.classList.add('loaded');
+            }, 1500);
+        });
+
+        // ===== УВЕДОМЛЕНИЯ =====
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+
+            let icon = '';
+            switch (type) {
+                case 'success':
+                    icon = '<i class="fas fa-check-circle"></i>';
+                    break;
+                case 'error':
+                    icon = '<i class="fas fa-exclamation-circle"></i>';
+                    break;
+                case 'info':
+                    icon = '<i class="fas fa-info-circle"></i>';
+                    break;
+            }
+
+            notification.innerHTML = `${icon} ${message}`;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 10);
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // ===== ДАННЫЕ ДЛЯ ДИНАМИЧЕСКОЙ ГЕНЕРАЦИИ УСЛУГ =====
+        const servicesData = [
+            {
+                icon: 'fas fa-paint-brush',
+                title: 'Web UI/UX Design',
+                description: 'Создаем интуитивно понятные интерфейсы, которые улучшают взаимодействие с пользователем и повышают конверсию.',
+                link: '#',
+                delay: 'delay-1'
+            },
+            {
+                icon: 'fas fa-chart-pie',
+                title: 'Dashboard and Saas Design',
+                description: 'Проектируем информативные дашборды и SaaS решения для эффективного управления бизнес-процессами.',
+                link: '#',
+                delay: 'delay-2'
+            },
+            {
+                icon: 'fas fa-mobile-alt',
+                title: 'Mobile App UI/UX Design',
+                description: 'Разрабатываем мобильные приложения с фокусом на пользовательском опыте и современных трендах дизайна.',
+                link: '#',
+                delay: 'delay-3'
+            },
+            {
+                icon: 'fas fa-rocket',
+                title: 'Digital Marketing',
+                description: 'Разрабатываем стратегии продвижения для увеличения узнаваемости бренда и привлечения клиентов.',
+                link: '#',
+                delay: 'delay-4'
+            },
+            {
+                icon: 'fas fa-chart-line',
+                title: 'Business Analytics',
+                description: 'Анализируем бизнес-процессы и предоставляем решения для оптимизации работы компании.',
+                link: '#',
+                delay: 'delay-1'
+            },
+            {
+                icon: 'fas fa-server',
+                title: 'Cloud Solutions',
+                description: 'Предоставляем облачные решения для масштабирования и безопасности вашего бизнеса.',
+                link: '#',
+                delay: 'delay-2'
+            }
+        ];
+
+        // ===== ФУНКЦИЯ ДЛЯ РЕНДЕРИНГА УСЛУГ =====
+        function renderServices() {
+            const servicesContainer = document.getElementById('servicesContainer');
+
+            // Очищаем контейнер
+            servicesContainer.innerHTML = '';
+
+            // Генерируем карточки услуг
+            servicesData.forEach((service, index) => {
+                const serviceCard = document.createElement('div');
+                serviceCard.className = `swiper-slide service-card animate-on-scroll ${service.delay}`;
+                serviceCard.innerHTML = `
+                        <div class="service-icon"><i class="${service.icon}"></i></div>
+                        <h3 class="service-title">${service.title}</h3>
+                        <p class="service-text">${service.description}</p>
+                        <a href="${service.link}" class="service-link">Узнать больше <i class="fas fa-arrow-right"></i></a>
+                    `;
+
+                servicesContainer.appendChild(serviceCard);
+            });
+
+            // Инициализация Swiper
+            const swiper = new Swiper('.mySwiper', {
+                slidesPerView: 1,
+                spaceBetween: 20,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                breakpoints: {
+                    640: {
+                        slidesPerView: 2,
+                    },
+                    992: {
+                        slidesPerView: 3,
+                    }
+                },
+                loop: true,
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: false,
+                },
+            });
+        }
+
         // ===== КАРУСЕЛЬ ИЗОБРАЖЕНИЙ =====
         const carouselImages = [
             'https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
@@ -1577,7 +1869,7 @@
                 dots.forEach((dot, index) => {
                     dot.classList.toggle('active', index === currentSlide);
                 });
-                
+
                 isAnimating = false;
             }, 10);
         }
@@ -1585,7 +1877,7 @@
         // Переход к конкретному слайду
         function goToSlide(index) {
             if (isAnimating) return;
-            
+
             isAnimating = true;
             currentSlide = index;
             updateCarousel();
@@ -1594,7 +1886,7 @@
         // Следующий слайд
         function nextSlide() {
             if (isAnimating) return;
-            
+
             isAnimating = true;
             currentSlide = (currentSlide + 1) % carouselImages.length;
             updateCarousel();
@@ -1603,7 +1895,7 @@
         // Предыдущий слайд
         function prevSlide() {
             if (isAnimating) return;
-            
+
             isAnimating = true;
             currentSlide = (currentSlide - 1 + carouselImages.length) % carouselImages.length;
             updateCarousel();
@@ -1743,8 +2035,9 @@
             if (email && password) {
                 loginModal.classList.remove('active');
                 document.body.style.overflow = '';
+                showNotification('Вы успешно вошли в систему!', 'success');
             } else {
-                alert('Пожалуйста, заполните все поля');
+                showNotification('Пожалуйста, заполните все поля', 'error');
             }
         });
 
@@ -1758,23 +2051,24 @@
 
             // Валидация
             if (!name || !email || !password || !confirm) {
-                alert('Пожалуйста, заполните все поля');
+                showNotification('Пожалуйста, заполните все поля', 'error');
                 return;
             }
 
             if (password !== confirm) {
-                alert('Пароли не совпадают');
+                showNotification('Пароли не совпадают', 'error');
                 return;
             }
 
             if (password.length < 6) {
-                alert('Пароль должен содержать не менее 6 символов');
+                showNotification('Пароль должен содержать не менее 6 символов', 'error');
                 return;
             }
 
             loginModal.classList.remove('active');
             document.body.style.overflow = '';
             switchTab('login');
+            showNotification('Регистрация прошла успешно!', 'success');
         });
 
         // Закрытие модального окна при клике вне его
@@ -1803,12 +2097,13 @@
             const email = document.getElementById('socialEmail').value;
 
             if (!name || !email) {
-                alert('Пожалуйста, заполните все поля');
+                showNotification('Пожалуйста, заполните все поля', 'error');
                 return;
             }
 
             socialAuthModal.classList.remove('active');
             loginModal.classList.remove('active');
+            showNotification('Регистрация завершена успешно!', 'success');
         });
 
         // Вход/регистрация через социальные сети
@@ -1859,6 +2154,7 @@
                             socialAuthModal.classList.remove('active');
                             loginModal.classList.remove('active');
                             document.body.style.overflow = '';
+                            showNotification(`Вы вошли через ${serviceName}!`, 'success');
                         }, 1500);
                     } else {
                         // Показываем форму для доп. данных
@@ -1875,20 +2171,20 @@
             const duration = 5 * 1000;
             const animationEnd = Date.now() + duration;
             const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 10000 };
-            
+
             function randomInRange(min, max) {
                 return Math.random() * (max - min) + min;
             }
-            
-            const interval = setInterval(function() {
+
+            const interval = setInterval(function () {
                 const timeLeft = animationEnd - Date.now();
-                
+
                 if (timeLeft <= 0) {
                     return clearInterval(interval);
                 }
-                
+
                 const particleCount = 50 * (timeLeft / duration);
-                
+
                 // Основные фейерверки
                 confetti({
                     ...defaults,
@@ -1900,7 +2196,7 @@
                     particleCount,
                     origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
                 });
-                
+
                 // Дополнительные эффекты
                 if (Math.random() > 0.7) {
                     confetti({
@@ -1918,20 +2214,20 @@
                         colors: ['#ff0000', '#00ff00', '#0000ff']
                     });
                 }
-                
+
                 // Случайные вспышки
                 if (Math.random() > 0.8) {
                     confetti({
                         particleCount: 150,
                         spread: 100,
-                        origin: { 
+                        origin: {
                             x: Math.random(),
                             y: Math.random() * 0.5
                         },
                         colors: ['#ff5e2f', '#c38cff', '#2b2d42', '#28a745']
                     });
                 }
-                
+
             }, 250);
         }
 
@@ -1939,33 +2235,27 @@
         premiumBtn.addEventListener('click', (e) => {
             e.preventDefault();
             createFireworks();
-            
-            // Показать сообщение
+
+            // Создаем уведомление в центре экрана
             const message = document.createElement('div');
+            message.className = 'premium-notification';
             message.innerHTML = '<h2>🎉 Премиум активирован! 🎉</h2><p>Теперь вы получили доступ ко всем эксклюзивным функциям!</p>';
-            message.style.position = 'fixed';
-            message.style.top = '50%';
-            message.style.left = '50%';
-            message.style.transform = 'translate(-50%, -50%)';
-            message.style.background = 'rgba(255, 255, 255, 0.95)';
-            message.style.padding = '30px';
-            message.style.borderRadius = '20px';
-            message.style.zIndex = '10001';
-            message.style.textAlign = 'center';
-            message.style.boxShadow = '0 10px 30px rgba(0,0,0,0.2)';
-            message.style.maxWidth = '90%';
-            message.style.width = '400px';
-            message.style.animation = 'fadeIn 0.5s ease';
-            
             document.body.appendChild(message);
-            
+
+            // Активируем плавное появление
             setTimeout(() => {
-                message.style.transition = 'opacity 0.5s ease';
+                message.classList.add('active');
+            }, 10);
+
+            // Удаляем через 3 секунды
+            setTimeout(() => {
                 message.style.opacity = '0';
                 setTimeout(() => {
                     document.body.removeChild(message);
                 }, 500);
             }, 3000);
+
+            showNotification('Премиум-функции активированы!', 'success');
         });
 
         // ===== АНИМАЦИЯ ПРИ ПРОКРУТКЕ =====
@@ -2048,7 +2338,10 @@
             // Инициализация карусели
             initCarousel();
             startAutoSlide();
-            
+
+            // Рендеринг услуг
+            renderServices();
+
             // Добавляем обработчики для карусели
             document.querySelectorAll('.carousel-slide').forEach(slide => {
                 slide.addEventListener('click', () => {
